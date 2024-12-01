@@ -1,3 +1,9 @@
 [submodule "talk"]
 	path = talk
 	url = https://github.com/hyvor/talk.hyvor.com
+[submodule "core"]
+	path = core
+	url = https://github.com/hyvor/hyvor.com
+[submodule "blogs"]
+	path = blogs
+	url = https://github.com/hyvor/blogs.hyvor.com
