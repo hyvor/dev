@@ -24,7 +24,7 @@ cd hyvor/dev
 Clone this repository:
 
 ```bash
-git clone --recurse-submodules https://github.com/hyvor/dev .Ò
+git clone --recurse-submodules https://github.com/hyvor/dev .
 ```
 
 Initialize the development environment:
