@@ -1,13 +1,15 @@
+name: hyvor
+
 services:
 
-    # Needed for core
+    # Needed for: core
     postgres:
         image: postgres:16.6
-        container_name: hyvor_postgres
+        container_name: postgres
         restart: always
         environment:
-            POSTGRES_USER: hyvor
-            POSTGRES_PASSWORD: hyvorpw
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
             POSTGRES_MULTIPLE_DATABASES: hyvor
         ports:
             - "5432:5432"
@@ -15,5 +17,23 @@ services:
             - postgres_data:/var/lib/postgresql/data
             - ./pgsql-multidb:/docker-entrypoint-initdb.d
 
+    # Needed for: blogs, talk
+    # Deprecate soon!
+    mysql:
+        image: mysql:8
+        container_name: mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: mysql
+            MYSQL_DATABASE: hyvor_blogs
+            MYSQL_USER: hyvor
+            MYSQL_PASSWORD: mysql
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        command: --skip-name-resolve
+
 volumes:
     postgres_data:
+    mysql_data:

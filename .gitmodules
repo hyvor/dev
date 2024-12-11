@@ -7,3 +7,6 @@
 [submodule "blogs"]
 	path = blogs
 	url = https://github.com/hyvor/blogs.hyvor.com
+[submodule "internal"]
+	path = internal
+	url = https://github.com/hyvor/internal

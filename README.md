@@ -12,7 +12,7 @@ This is the starting point to start developing HYVOR products.
 -   Talk (talk.hyvor.com)
 -   Blogs (blogs.hyvor.com)
 
-### Get Started
+### Clone the Repository and Initialize
 
 Create a new directory for HYVOR development, if you don't have one already:
 
@@ -34,3 +34,17 @@ make init
 ```
 
 This command will run the `make init` command in each submodule, then set up required certificates and run the development server.
+
+### Databases and Services
+
+To start the databases via Docker, run:
+
+```bash
+make compose-up
+```
+
+To stop the databases, run:
+
+```bash
+make compose-down
+```
