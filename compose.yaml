@@ -10,11 +10,13 @@ services:
            - "--providers.docker.exposedbydefault=false"
            - "--providers.docker.network=hyvor-network"
 
-           - "--providers.file.fileName=/etc/traefik/tls.yaml"
+           - "--providers.file.fileName=/etc/traefik/tls.toml"
            - "--providers.file.watch=true"
            
            - "--entryPoints.http.address=:80"
            - "--entryPoints.https.address=:443"
+
+           - "tls.options.default.sniStrict=true"
         networks:
             - hyvor-network
         ports:
