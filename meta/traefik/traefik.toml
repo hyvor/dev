@@ -1,0 +1,17 @@
+# log default is ERROR, but WARN is more helpful
+log.level = "DEBUG"
+
+# enable dashboard on 8080 with NO AUTH
+api.insecure = true
+api.dashboard = true
+
+entryPoints.web.address = ":80"
+entryPoints.websecure.address = ":443"
+
+providers.docker.exposedByDefault = false
+providers.docker.network = "hyvor-network"
+
+providers.file.fileName = "/etc/traefik/dynamic.toml"
+providers.file.watch = true
+
+tls.options.default.sniStrict = true

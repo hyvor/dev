@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -e
+
+mkcert -key-file meta/traefik/hyvor.dev.key.pem -cert-file meta/traefik/hyvor.dev.pem hyvor.dev
