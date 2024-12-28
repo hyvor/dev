@@ -29,13 +29,8 @@ git clone --recurse-submodules https://github.com/hyvor/dev .
 
 ### Pre-requisites
 
-- PHP 8.3 (check `php -v`)
-  - [Ubuntu](https://php.watch/articles/php-8.3-install-upgrade-on-debian-ubuntu)
-  - [Mac](https://getgrav.org/blog/macos-sequoia-apache-multiple-php-versions) - Ignore Apache part
-- Composer (check `composer -v`)
-  - [Install](https://getcomposer.org/download/)
-- [Caddy](https://caddyserver.com/docs/install)
--  [Docker](https://docs.docker.com/engine/install/) (optional)
+-  [Docker](https://docs.docker.com/engine/install/)
+- [mkcert](https://github.com/FiloSottile/mkcert)
 
 ### Setup
 
