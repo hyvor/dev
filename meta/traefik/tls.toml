@@ -1,0 +1,7 @@
+[[tls.certificates]]
+certFile = "/etc/traefik/hyvor.dev.pem"
+keyFile = "/etc/traefik/hyvor.dev.key.pem"
+
+[[tls.certificates]]
+certFile = "/etc/traefik/wildcard.hyvor.dev.pem"
+keyFile = "/etc/traefik/wildcard.hyvor.dev.key.pem"

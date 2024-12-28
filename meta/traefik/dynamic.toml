@@ -1,4 +1,0 @@
-
-[[tls.certificates]]
-certFile = "/etc/traefik/hyvor.dev.pem"
-keyFile = "/etc/traefik/hyvor.dev.key.pem"
