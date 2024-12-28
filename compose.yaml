@@ -1,0 +1,23 @@
+services:
+    # :36100
+    proxy:
+        container_name: hyvor-proxy
+        image: traefik:v3.2
+        command:
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--providers.docker.network=hyvor-network"
+            - "--entryPoints.web.address=:80"
+        networks:
+            - hyvor-network
+        ports:
+            - "80:80"
+            - "8080:8080"
+            - "443:443"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+    hyvor-network:
+        external: true
