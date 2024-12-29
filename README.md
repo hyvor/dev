@@ -2,15 +2,15 @@
 
 This is the starting point to start developing HYVOR products.
 
--   Sets up the development environment
--   Handles certificates
--   Runs the development Caddy server
+- Sets up the development environment
+- Handles certificates
+- Runs the development Caddy server
 
 ### Products
 
--   Core (hyvor.com)
--   Talk (talk.hyvor.com)
--   Blogs (blogs.hyvor.com)
+- Core (hyvor.com)
+- Talk (talk.hyvor.com)
+- Blogs (blogs.hyvor.com)
 
 ### Clone the Repository and Initialize
 
@@ -29,7 +29,7 @@ git clone --recurse-submodules https://github.com/hyvor/dev .
 
 ### Pre-requisites
 
--  [Docker](https://docs.docker.com/engine/install/)
+- [Docker](https://docs.docker.com/engine/install/)
 - [mkcert](https://github.com/FiloSottile/mkcert)
 
 ### Setup
@@ -91,3 +91,13 @@ To stop the databases, run:
 ```bash
 make compose-down
 ```
+
+### Default Services
+
+Once you run `./run`, the following services will be available to ease development:
+
+| Service | URL                                                  | Username, Password |
+| ------- | ---------------------------------------------------- | ------------------ |
+| Mailpit | [http://mailpit.localhost](http://mailpit.localhost) |
+| Minio   | [http://minio.localhost](http://minio.localhost)     | minio, miniopwd    |
+| WhoDB   | [http://whodb.localhost](http://whodb.localhost)     |                    |
