@@ -2,5 +2,25 @@
 
 set -e
 
+# Generate SSL certificates
+echo "Generating SSL certificates..."
 mkcert -key-file meta/traefik/hyvor.dev.key.pem -cert-file meta/traefik/hyvor.dev.pem hyvor.dev
 mkcert -key-file meta/traefik/wildcard.hyvor.dev.key.pem -cert-file meta/traefik/wildcard.hyvor.dev.pem "*.hyvor.dev"
+
+# Create docker network if not exists
+echo "Creating docker network..."
+docker network inspect hyvor-network >/dev/null 2>&1 || docker network create hyvor-network
+
+# Create data directories
+echo "Creating data directories..."
+mkdir -p data/minio data/mailpit data/postgres
+
+# Minio buckets
+echo "Creating Minio buckets..."
+
+buckets="core talk blogs"
+
+# create dir in data/minio for each
+for bucket in $buckets; do
+  mkdir -p data/minio/$bucket
+done
