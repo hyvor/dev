@@ -36,6 +36,8 @@ services:
         container_name: hyvor-service-postgres
         image: postgres:16.6
         restart: always
+        expose:
+            - "5432"
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
@@ -99,7 +101,7 @@ services:
         container_name: hyvor-service-whodb
         image: clidey/whodb
         environment:
-            WHODB_POSTGRES_1: '{"host":"hyvor-service-postgres","user":"postgres","password":"postgres","database":"hyvor"}'
+            WHODB_POSTGRES: '[{"host":"hyvor-service-postgres","user":"postgres","password":"postgres","database":"hyvor"}]'
         networks:
             - hyvor-network
         labels:
