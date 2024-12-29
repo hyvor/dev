@@ -1,25 +1,35 @@
-## HYVOR DEV
+## HYVOR MAIN
 
-This is the starting point to start developing HYVOR products.
+This is the starting point to start developing HYVOR products. It contains the other repositories as submodules.
 
-- Sets up the development environment
-- Handles certificates
-- Runs the development Caddy server
+Components:
 
-### Products
+- `core` (hyvor.com)
+- `talk` (talk.hyvor.com)
+- `blogs` (blogs.hyvor.com)
 
-- Core (hyvor.com)
-- Talk (talk.hyvor.com)
-- Blogs (blogs.hyvor.com)
+Other:
 
-### Clone the Repository and Initialize
+- `internal` - Internal PHP library
+
+## First Time Setup
+
+### Pre-requisites
+
+- [Git](https://git-scm.com/downloads)
+- [Docker](https://docs.docker.com/engine/install/)
+- [mkcert](https://github.com/FiloSottile/mkcert)
+
+### Clone the Repository
 
 Create a new directory for HYVOR development, if you don't have one already:
 
 ```bash
-mkdir hyvor/dev
-cd hyvor/dev
+mkdir hyvor/main
+cd hyvor/main
 ```
+
+All below commands are to be run in this directory.
 
 Clone this repository:
 
@@ -27,22 +37,21 @@ Clone this repository:
 git clone --recurse-submodules https://github.com/hyvor/dev .
 ```
 
-### Pre-requisites
+### Init
 
-- [Docker](https://docs.docker.com/engine/install/)
-- [mkcert](https://github.com/FiloSottile/mkcert)
-
-### Setup
-
-Initialize the development environment:
+Run the following command to initialize the project. You only need to run this once.
 
 ```bash
-make init
+./init
 ```
 
-This command will run the `make init` command in each submodule, then set up required certificates and run the development server.
+This command:
 
-Then, add the following lines to your `/etc/hosts` file:
+- Generates SSL certificates for the development server using `mkcert`.
+- Creates the docker network `hyvor-network`.
+- Creates data directories for databases for Minio (S3).
+
+Even in the local development, we use a domain name with HTTPS to mimic the production environment. To resolve *.hyvor.dev to 127.0.0.1, add the following lines to your `/etc/hosts` file:
 
 ```bash
 127.0.0.1 hyvor.dev
@@ -52,52 +61,63 @@ Then, add the following lines to your `/etc/hosts` file:
 
 (as more products are added, you will need to add them to the `/etc/hosts` file)
 
-### Development Server
+### Run
 
-Run `make dev` with the components you want to run.
+Once init is done, you can run services and components.
 
-core and blogs:
-
-```bash
-make dev C="core blogs"
-```
-
-talk:
+To run all services, run:
 
 ```bash
-make dev C="talk"
+docker compose up -d
 ```
 
-To know:
+It starts the following services:
 
-- Vite and Laravel dev servers are run on ports between 41000 and 41999.
-- Caddy serves on port 443 with HTTPS.
-  - It will automatically make the CA trusted on your system. However, additional work may be required to make browsers trust the CA. See [this](https://thomas-leister.de/en/how-to-import-ca-root-certificate/).
-  - Caddy is run without sudo. You might need to run the following if you get a permission error ([source](https://serverfault.com/a/807884)):
-    ```bash
-    sudo setcap CAP_NET_BIND_SERVICE=+eip $(which caddy)
-    ```
+| Service             | URL                                                  | Username, Password |
+|---------------------| ---------------------------------------------------- |--------------------|
+| Traefik             | (Proxy for `*.hyvor.dev`)                              |                    | 
+| Postgres | `postgres://hyvor-service-postgres:5432`         | postgres, postgres |
+| Mailpit             | [http://mailpit.localhost](http://mailpit.localhost) |
+| Minio               | [http://minio.localhost](http://minio.localhost)     | minio, miniopwd    |
+| WhoDB               | [http://whodb.localhost](http://whodb.localhost)     |                    |
 
-### Databases and Services
 
-To start the databases via Docker, run:
+To run a specific component, run:
 
 ```bash
-make compose-up
+./run core
 ```
 
-To stop the databases, run:
+If you want to run another service, you can run it like this in a new terminal:
 
 ```bash
-make compose-down
+./run talk
 ```
 
-### Default Services
+Then visit the component URL in your browser:
 
-Once you run `./run`, the following services will be available to ease development:
+- [https://hyvor.dev](https://hyvor.dev)
+- [https://talk.hyvor.dev](https://talk.hyvor.dev)
+- [https://blogs.hyvor.dev](https://blogs.hyvor.dev)
 
-| Service | URL                                                  | Username, Password |
-| ------- | ---------------------------------------------------- | ------------------ |
-| Mailpit | [http://mailpit.localhost](http://mailpit.localhost) |
-| Minio   | [http://minio.localhost](http://minio.localhost)     | minio, miniopwd    |
-| WhoDB   | [http://whodb.localhost](http://whodb.localhost)     |                    |
+### Stop
+
+To stop all services, run:
+
+```bash
+docker compose down
+```
+
+To stop a specific component, run `CTRL+C` in the terminal where you ran the `./run` command.
+
+### How it works
+
+- Development
+  - Each component has a Dockerfile that builds the development environment with all the required dependencies.
+  - They also have a `compose.yaml` file that configures `composer watch` to automatically sync your code changes to the container.
+  - Everything runs in Docker containers, so you don't need to install anything on your local machine.
+- hyvor.dev and localhost services
+  - Traefik listens to port 80 and 443 on your local machine.
+  - It routes requests to the correct service based on Docker labels using auto discovery.
+  - It uses the SSL certificates generated by `mkcert` to serve HTTPS.
+  - `mkcert` (usually) configures your OS and browser to trust the mkcert root certificate, so you don't see SSL warnings. A browser restart may be required.

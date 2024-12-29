@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Usage: ./run <component>
+# Example: ./run core
+
+set -e
+
+component=$1
+
+if [ -z "$component" ]; then
+  echo "Component name is required. Usage: ./run <component>"
+  exit 1
+fi
+
+echo "Running $component..."
+
+cd $component
+docker compose watch

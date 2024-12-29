@@ -17,9 +17,7 @@ mkdir -p data/minio data/mailpit data/postgres
 
 # Minio buckets
 echo "Creating Minio buckets..."
-
 buckets="core talk blogs"
-
 # create dir in data/minio for each
 for bucket in $buckets; do
   mkdir -p data/minio/$bucket
