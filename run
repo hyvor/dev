@@ -14,5 +14,9 @@ fi
 
 echo "Running $component..."
 
+# Dockerfile cannot copy from outside the context so we need to copy the files to the component folder
+# copy internal/* to $component/internal except the vendor folder
+rsync -a --exclude 'vendor' internal/ $component/backend/internal
+
 cd $component
-docker compose watch
+docker compose up --watch
