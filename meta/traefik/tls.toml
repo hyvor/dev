@@ -5,3 +5,8 @@ keyFile = "/etc/traefik/hyvor.dev.key.pem"
 [[tls.certificates]]
 certFile = "/etc/traefik/wildcard.hyvor.dev.pem"
 keyFile = "/etc/traefik/wildcard.hyvor.dev.key.pem"
+
+[http.middlewares]
+[http.middlewares.vite-retry.retry]
+attempts = 5
+initialInterval = "100ms"

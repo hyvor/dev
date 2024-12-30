@@ -19,4 +19,4 @@ echo "Running $component..."
 rsync -a --exclude 'vendor' internal/ $component/backend/internal
 
 cd $component
-docker compose up --watch
+docker compose up --build --watch 
