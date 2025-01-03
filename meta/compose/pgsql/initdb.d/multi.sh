@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# https://github.com/mrts/docker-postgresql-multiple-databases/blob/master/create-multiple-postgresql-databases.sh
+# @source: https://github.com/mrts/docker-postgresql-multiple-databases/blob/master/create-multiple-postgresql-databases.sh
 
 set -e
 set -u

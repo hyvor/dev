@@ -12,11 +12,28 @@ if [ -z "$component" ]; then
   exit 1
 fi
 
-echo "Running $component..."
+if [ ! -d "$component" ]; then
+  echo "Component $component does not exist."
+  exit 1
+fi
+
+cleanup() {
+  echo "Cleaning up internal library files..."
+  rm -rf "$component/internal"
+  echo "Cleanup complete."
+}
+
+trap cleanup INT TERM EXIT
+
+echo "Copying internal library files..."
 
 # Dockerfile cannot copy from outside the context so we need to copy the files to the component folder
 # copy internal/* to $component/internal except the vendor folder
-rsync -a --exclude 'vendor' internal/ $component/backend/internal
+rsync -a --exclude 'vendor' internal/ $component/internal
+
+echo "Running $component..."
 
 cd $component
-docker compose up --build --watch 
+docker compose up --build --watch
+
+cleanup

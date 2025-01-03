@@ -1,4 +1,4 @@
 .idea
 
-meta/traefik/*.pem
+meta/compose/traefik/*.pem
 data

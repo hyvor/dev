@@ -29,7 +29,7 @@ services:
             - "8080:8080"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - ./meta/traefik:/etc/traefik
+            - ./meta/compose/traefik:/etc/traefik
 
     # Postgres for core
     hyvor-service-postgres:
@@ -41,9 +41,10 @@ services:
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
-            POSTGRES_DB: hyvor
+            POSTGRES_MULTIPLE_DATABASES: hyvor, hyvor_testing
         volumes:
             - ./data/postgres:/var/lib/postgresql/data
+            - ./meta/compose/pgsql/initdb.d:/docker-entrypoint-initdb.d
         networks:
             - hyvor-network
 
