@@ -4,8 +4,8 @@ set -e
 
 # Generate SSL certificates
 echo "Generating SSL certificates..."
-mkcert -key-file meta/traefik/hyvor.dev.key.pem -cert-file meta/traefik/hyvor.dev.pem hyvor.dev
-mkcert -key-file meta/traefik/wildcard.hyvor.dev.key.pem -cert-file meta/traefik/wildcard.hyvor.dev.pem "*.hyvor.dev"
+mkcert -key-file meta/compose/traefik/hyvor.dev.key.pem -cert-file meta/compose/traefik/hyvor.dev.pem hyvor.dev
+mkcert -key-file meta/compose/traefik/wildcard.hyvor.dev.key.pem -cert-file meta/compose/traefik/wildcard.hyvor.dev.pem "*.hyvor.dev"
 
 # Create docker network if not exists
 echo "Creating docker network..."
