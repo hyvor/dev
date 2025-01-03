@@ -15,10 +15,11 @@ docker network inspect hyvor-network >/dev/null 2>&1 || docker network create hy
 echo "Creating data directories..."
 mkdir -p data/minio data/mailpit data/postgres
 
+components = "core talk blogs"
+
 # Minio buckets
 echo "Creating Minio buckets..."
-buckets="core talk blogs"
 # create dir in data/minio for each
-for bucket in $buckets; do
+for bucket in $components; do
   mkdir -p data/minio/$bucket
 done
