@@ -31,9 +31,14 @@ echo "Copying internal library files..."
 # copy internal/* to $component/internal except the vendor folder
 rsync -a --exclude 'vendor' internal/ $component/internal
 
-echo "Running $component..."
 
 cd $component
-docker compose up --build --watch
+
+
+PROFILE=${2:-dev}
+
+echo "Running $component with profile $PROFILE"
+
+docker compose --profile $PROFILE up --build --watch
 
 cleanup
