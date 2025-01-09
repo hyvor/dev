@@ -1,12 +1,16 @@
 [submodule "talk"]
 	path = talk
 	url = https://github.com/hyvor/talk.hyvor.com
+	ignore = all
 [submodule "core"]
 	path = core
 	url = https://github.com/hyvor/hyvor.com
+	ignore = all
 [submodule "blogs"]
 	path = blogs
 	url = https://github.com/hyvor/blogs.hyvor.com
+	ignore = all
 [submodule "internal"]
 	path = internal
 	url = https://github.com/hyvor/internal
+	ignore = all

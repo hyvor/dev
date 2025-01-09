@@ -48,6 +48,20 @@ services:
         networks:
             - hyvor-network
 
+    hyvor-service-citus:
+        container_name: hyvor-service-citus
+        image: citusdata/citus:12.1
+        restart: always
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_MULTIPLE_DATABASES: hyvor, hyvor_testing, hyvor_e2e
+        volumes:
+            - ./data/citus:/var/lib/postgresql/data
+            - ./meta/compose/pgsql/initdb.d:/docker-entrypoint-initdb.d
+        networks:
+            - hyvor-network
+
     # Mailpit for testing emails via SMTP
     # Access via: http://mail.localhost
     hyvor-service-mailpit:
