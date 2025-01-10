@@ -31,23 +31,6 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock
             - ./meta/compose/traefik:/etc/traefik
 
-    # Postgres for core
-    hyvor-service-postgres:
-        container_name: hyvor-service-postgres
-        image: postgres:16.6
-        restart: always
-        expose:
-            - "5432"
-        environment:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_MULTIPLE_DATABASES: hyvor, hyvor_testing, hyvor_e2e
-        volumes:
-            - ./data/postgres:/var/lib/postgresql/data
-            - ./meta/compose/pgsql/initdb.d:/docker-entrypoint-initdb.d
-        networks:
-            - hyvor-network
-
     hyvor-service-citus:
         container_name: hyvor-service-citus
         image: citusdata/citus:12.1
@@ -56,6 +39,8 @@ services:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
             POSTGRES_MULTIPLE_DATABASES: hyvor, hyvor_testing, hyvor_e2e
+        ports:
+            - "54321:5432"
         volumes:
             - ./data/citus:/var/lib/postgresql/data
             - ./meta/compose/pgsql/initdb.d:/docker-entrypoint-initdb.d
@@ -108,22 +93,6 @@ services:
             traefik.http.routers.hyvor-service-minio.rule: Host(`minio.localhost`)
             traefik.http.routers.hyvor-service-minio.entrypoints: http
             traefik.http.services.hyvor-service-minio.loadbalancer.server.port: 9001
-
-
-    # WHODB for core
-    # Access via: http://db.localhost
-    hyvor-service-whodb:
-        container_name: hyvor-service-whodb
-        image: clidey/whodb
-        environment:
-            WHODB_POSTGRES: '[{"host":"hyvor-service-postgres","user":"postgres","password":"postgres","database":"hyvor"}]'
-        networks:
-            - hyvor-network
-        labels:
-            traefik.enable: true
-            traefik.http.routers.hyvor-service-whodb.rule: Host(`whodb.localhost`)
-            traefik.http.routers.hyvor-service-whodb.entrypoints: http
-            traefik.http.services.hyvor-service-whodb.loadbalancer.server.port: 8080
 
 networks:
     hyvor-network:
