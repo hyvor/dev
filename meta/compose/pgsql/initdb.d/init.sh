@@ -15,10 +15,11 @@ function create_user_and_database() {
 EOSQL
 }
 
-if [ -n "$POSTGRES_MULTIPLE_DATABASES" ]; then
-	echo "Multiple database creation requested: $POSTGRES_MULTIPLE_DATABASES"
-	for db in $(echo $POSTGRES_MULTIPLE_DATABASES | tr ',' ' '); do
-		create_user_and_database $db
-	done
-	echo "Multiple databases created"
-fi
+base_dbs="hyvor hyvor_blogs hyvor_talk"
+
+for db in $base_dbs; do
+  echo "Creating DB variants for $db"
+  create_user_and_database $db
+  create_user_and_database $db"_testing"
+  create_user_and_database $db"_e2e"
+done
