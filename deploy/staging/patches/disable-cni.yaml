@@ -1,0 +1,10 @@
+# This is required to use cilium as the CNI plugin
+# Disables kube proxy as well
+# Reference: https://www.talos.dev/v1.9/kubernetes-guides/network/deploying-cilium/
+
+cluster:
+  network:
+    cni:
+      name: none
+  proxy:
+    disabled: true
