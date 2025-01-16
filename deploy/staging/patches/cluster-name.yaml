@@ -1,4 +1,4 @@
-# patches/cluster-name.yaml
+# Set custom cluster name
 cluster:
   clusterName: cluster.hyvorstaging.com
   network:

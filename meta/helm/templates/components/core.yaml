@@ -28,10 +28,9 @@ spec:
     spec:
       containers:
         - name: core
-          image: hyvorcoreminikube:latest
-          imagePullPolicy: IfNotPresent
+          image: hyvor/core:0.0.30
           ports:
-            - containerPort: 80
+            - containerPort: 3000
           envFrom:
             - configMapRef:
                 name: core-config
@@ -49,5 +48,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 3000
   type: ClusterIP
