@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Usage: ./run <component>
 # Example: ./run core
@@ -21,14 +21,16 @@ fi
 
 
 has_option() {
-  for var in "$@"
+    local option=$1
+    shift
+    for var in "$@"
     do
-      if [ "$var" = "$1" ];
-      then
+        if [ "$var" = "$option" ]; then
         return 0
-      fi
+        fi
     done
-  return 1
+    
+    return 1
 }
 
 
@@ -41,7 +43,7 @@ cleanup() {
   rm -rf $component/backend/packages/internal
 }
 
-trap cleanup INT
+trap cleanup EXIT
 
 ################ INTERNAL LIBRARY ################
 
@@ -63,19 +65,39 @@ fi
 # if it has --design option
 if has_option "--design" "$@"
 then
-  echo "Watching and syncing design system"
-  cd design
-  npm run package:watch &
-  cd ..
-  exit 0
+    echo "Watching and syncing design system"
+    cd design || exit
+    npm run package:watch &
+    cd ..
+
+    rsync -avz design/dist design/package.json $component/frontend/src/design
+
+    # Watch internal library for changes
+    if command -v fswatch >/dev/null 2>&1
+    then
+        echo "Using fswatch to sync design system"
+        fswatch -o design/dist | xargs -I{} rsync -avz design/dist design/package.json $component/frontend/src/design &
+    else
+        echo "NOTICE: fswatch is not available. Please install fswatch to watch & sync design system"
+    fi
 fi
 
 
 ################ DOCKER COMPOSE ################
 
 # Run compose
-PROFILE=${2:-dev}
+
+get_profile() {
+  if has_option "--e2e" "$@"
+  then
+    echo "e2e"
+  else
+    echo "dev"
+  fi
+}
+
+PROFILE=$(get_profile "$@")
 echo "Running $component with profile $PROFILE"
-docker compose  -f $component/compose.yaml --profile $PROFILE up --build --watch
+docker compose  -f "$component/compose.yaml" --profile "$PROFILE" up --build --watch
 
 cleanup
