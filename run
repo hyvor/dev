@@ -3,7 +3,7 @@
 # Usage: ./run <component>
 # Example: ./run core
 
-set -x
+set -e
 
 component=$1
 
@@ -17,19 +17,22 @@ if [ ! -d "$component" ]; then
   exit 1
 fi
 
-# Sync internal library
-echo "Syncing internal library"
-rsync -avz --exclude 'vendor' internal $component/backend/packages
+################ HELPERS ################
 
-# Watch internal library for changes
-if command -v fswatch &> /dev/null
-then
-  echo "Using fswatch to sync internal library"
-  fswatch -o internal | xargs -I{} rsync -avzq --exclude 'vendor' internal $component/backend/packages &
-  FS_WATCH_PID=$!
-else
-  echo "NOTICE: fswatch is not available. Please install fswatch to sync internal library"
-fi
+
+has_option() {
+  for var in "$@"
+    do
+      if [ "$var" = "$1" ];
+      then
+        return 0
+      fi
+    done
+  return 1
+}
+
+
+################ CLEANUP ################
 
 cleanup() {
   echo "Cleaning up"
@@ -39,6 +42,36 @@ cleanup() {
 }
 
 trap cleanup INT
+
+################ INTERNAL LIBRARY ################
+
+# Sync internal library
+echo "Syncing internal library"
+rsync -avz --exclude 'vendor' internal $component/backend/packages
+
+# Watch internal library for changes
+if command -v fswatch >/dev/null 2>&1
+then
+  echo "Using fswatch to sync internal library"
+  fswatch -o internal | xargs -I{} rsync -avzq --exclude 'vendor' internal $component/backend/packages &
+else
+  echo "NOTICE: fswatch is not available. Please install fswatch to sync internal library"
+fi
+
+################ DESIGN SYSTEM ################
+
+# if it has --design option
+if has_option "--design" "$@"
+then
+  echo "Watching and syncing design system"
+  cd design
+  npm run package:watch &
+  cd ..
+  exit 0
+fi
+
+
+################ DOCKER COMPOSE ################
 
 # Run compose
 PROFILE=${2:-dev}

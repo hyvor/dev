@@ -1,5 +1,5 @@
 .idea
 
 meta/compose/traefik/*.pem
-data
+/data
 node_modules
