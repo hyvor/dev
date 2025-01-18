@@ -3,7 +3,7 @@
 # Usage: ./run <component>
 # Example: ./run core
 
-set -e
+set -x
 
 component=$1
 
@@ -17,28 +17,32 @@ if [ ! -d "$component" ]; then
   exit 1
 fi
 
+# Sync internal library
+echo "Syncing internal library"
+rsync -avz --exclude 'vendor' internal $component/backend/packages
+
+# Watch internal library for changes
+if command -v fswatch &> /dev/null
+then
+  echo "Using fswatch to sync internal library"
+  fswatch -o internal | xargs -I{} rsync -avzq --exclude 'vendor' internal $component/backend/packages &
+  FS_WATCH_PID=$!
+else
+  echo "NOTICE: fswatch is not available. Please install fswatch to sync internal library"
+fi
+
 cleanup() {
-  echo "Cleaning up internal library files..."
-  rm -rf "$component/internal"
-  echo "Cleanup complete."
+  echo "Cleaning up"
+  # kil all child processes
+  pkill -P $$  --signal 9
+  rm -rf $component/backend/packages/internal
 }
 
-trap cleanup INT TERM EXIT
+trap cleanup INT
 
-echo "Copying internal library files..."
-
-# Dockerfile cannot copy from outside the context so we need to copy the files to the component folder
-# copy internal/* to $component/internal except the vendor folder
-rsync -a --exclude 'vendor' internal/ $component/internal
-
-
-cd $component
-
-
+# Run compose
 PROFILE=${2:-dev}
-
 echo "Running $component with profile $PROFILE"
-
-docker compose --profile $PROFILE up --build --watch
+docker compose  -f $component/compose.yaml --profile $PROFILE up --build --watch
 
 cleanup
