@@ -14,3 +14,7 @@
 	path = internal
 	url = https://github.com/hyvor/internal
 	ignore = all
+[submodule "design"]
+	path = design
+	url = https://github.com/hyvor/design
+	ignore = all
