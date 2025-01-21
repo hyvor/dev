@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: instance-env
+data:
+    HYVOR_INSTANCE: https://cluster.hyvorstaging.com
+    APP_KEY: "base64:ZGnq0RrBkG/Z4kjBtYhyoY5OF6FDuXrIAvmC0nvfYEw="
+    APP_DEBUG: false

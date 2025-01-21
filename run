@@ -49,13 +49,13 @@ trap cleanup EXIT
 
 # Sync internal library
 echo "Syncing internal library"
-rsync -avz --exclude 'vendor' internal $component/backend/packages
+rsync -avz --exclude 'vendor' --exclude '.git' internal $component/backend/packages > /dev/null
 
 # Watch internal library for changes
 if command -v fswatch >/dev/null 2>&1
 then
   echo "Using fswatch to sync internal library"
-  fswatch -o internal | xargs -I{} rsync -avzq --exclude 'vendor' internal $component/backend/packages &
+  fswatch -o --exclude 'internal/vendor' internal | xargs -I{} rsync -avzq --exclude 'vendor' --exclude '.git' internal $component/backend/packages > /dev/null &
 else
   echo "NOTICE: fswatch is not available. Please install fswatch to sync internal library"
 fi
@@ -76,7 +76,7 @@ then
     if command -v fswatch >/dev/null 2>&1
     then
         echo "Using fswatch to sync design system"
-        fswatch -o design/dist | xargs -I{} rsync -avz design/dist design/package.json $component/frontend/src/design &
+        fswatch -o design/dist --latency 1 | xargs -I{} rsync -avz design/dist design/package.json $component/frontend/src/design > /dev/null &
     else
         echo "NOTICE: fswatch is not available. Please install fswatch to watch & sync design system"
     fi
