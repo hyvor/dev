@@ -21,3 +21,7 @@
 .idea/
 *.tmproj
 .vscode/
+
+# temporarily
+components/
+services/pgsql.yaml
