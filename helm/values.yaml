@@ -1,5 +1,10 @@
 # Configure the cluster (which services to install)
 cluster:
+
+    monitoring:
+        # Whether to install Prometheus Operator
+        enabled: "true"
+
     # Whether to create a PGSQL database within the cluster
     # Set this to false if you are using an external database like AWS RDS
     db: "true"
