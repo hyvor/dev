@@ -16,25 +16,15 @@ metadata:
     name: core-deployment
     labels:
         component: core
-spec:
-    replicas: 2
-    selector:
-        matchLabels:
-            component: core
-    template:
-        metadata:
-            labels:
-                component: core
-        spec:
-            containers:
-                - name: core
-                  image: hyvorcoreminikube:latest
-                  imagePullPolicy: IfNotPresent
-                  ports:
-                      - containerPort: 80
-                  envFrom:
-                      - configMapRef:
-                            name: core-env
+    spec:
+        containers:
+            - name: core
+              image: hyvor/core:0.0.30
+              ports:
+                  - containerPort: 3000
+              envFrom:
+                  - configMapRef:
+                        name: core-config
 
 ---
 apiVersion: v1
@@ -49,5 +39,5 @@ spec:
     ports:
         - protocol: TCP
           port: 80
-          targetPort: 80
+          targetPort: 3000
     type: ClusterIP

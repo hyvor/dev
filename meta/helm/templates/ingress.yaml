@@ -10,6 +10,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: core-service
+                name: test-webapp-service
                 port:
                   number: 80
