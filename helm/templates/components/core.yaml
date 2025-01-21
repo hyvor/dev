@@ -1,33 +1,42 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: core-env
+    name: core-env-config
 data:
-    DB_HOST: {{ .Values.instance.db.host }}
-    DB_PORT: {{ .Values.instance.db.port }}
-    DB_USER: {{ .Values.instance.db.user }}
-    DB_PASSWORD: {{ .Values.instance.db.password }}
-    DB_DATABASE: {{ .Values.components.core.db.database }}
+    DB_HOST: "{{ .Values.instance.db.host }}"
+    DB_PORT: "{{ .Values.instance.db.port }}"
+    DB_USER: "{{ .Values.instance.db.user }}"
+    DB_PASSWORD: "{{ .Values.instance.db.password }}"
+    DB_DATABASE: "{{ .Values.components.core.db.database }}"
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: core-deployment
-    labels:
+  name: core-deployment
+  labels:
+    component: core
+spec:
+  selector:
+    matchLabels:
+      component: core
+  template:
+    metadata:
+      labels:
         component: core
     spec:
-        containers:
-            - name: core
-              image: hyvor/core:beta-billing-1
-              ports:
-                  - containerPort: 80
-              envFrom:
-                  - configMapRef:
-                        name: instance-env
-                  - configMapRef:
-                        name: core-env
-
+      containers:
+        - name: core
+          image: hyvor/core:beta-billing-1
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: instance-env-config
+            - configMapRef:
+                name: core-env-config
+      imagePullSecrets:
+        - name: docker-registry-secret
 ---
 apiVersion: v1
 kind: Service
@@ -41,5 +50,5 @@ spec:
     ports:
         - protocol: TCP
           port: 80
-          targetPort: 3000
+          targetPort: 80
     type: ClusterIP

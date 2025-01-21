@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-    name: instance-env
-data:
-    HYVOR_INSTANCE: "https://{{ .Values.instance.domain }}"
-    APP_KEY: "{{ .Values.instance.appKey }}"
-    APP_DEBUG: "{{ .Values.instance.appDebug }}"
