@@ -3,11 +3,13 @@ kind: ConfigMap
 metadata:
     name: core-env
 data:
-    DB_HOST: pgsql-service
-    DB_PORT: "5432"
-    DB_USER: postgres
-    DB_PASSWORD: postgres
-    DB_DATABASE: hyvor
+    HYVOR_INSTANCE: "https://{{ .Values.instance.domain }}"
+    
+    DB_HOST: {{ .Values.instance.db.host }}
+    DB_PORT: {{ .Values.instance.db.port }}
+    DB_USER: {{ .Values.instance.db.user }}
+    DB_PASSWORD: {{ .Values.instance.db.password }}
+    DB_DATABASE: {{ .Values.components.core.db.database }}
 
 ---
 apiVersion: apps/v1

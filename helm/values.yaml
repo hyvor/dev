@@ -5,11 +5,15 @@ cluster:
     db: true
 
 instance:
-    # The URL of the instance
+    # The primary domain of the instance
     # This is where you will be hosting the HYVOR Instance
-    # Each component (product) is accessible via {component}.{instance}
+    # Each component (product) is accessible via https://{component}.{domain}
     # Required
-    instance: "https://hyvor.example.org"
+    domain: "hyvor.example.org"
+
+    # The app key for the instance
+    # Always use HTTPS for production
+    https: true
 
     # This is used to encrypt communication between components
     # and also to generate tokens for authentication, etc.
@@ -23,7 +27,7 @@ instance:
     # The PostgreSQL Database
     # If cluster.db is true, you can use the default values
     db:
-        host: "hyvor-pgsql-service"
+        host: "pgsql-service"
         port: "5432"
         user: "postgres"
         password: "postgres"
@@ -51,6 +55,9 @@ components:
     # This is the main component that handles the core functionality
     # including authentication and other central services
     core:
+        db:
+            # name of the database
+            database: hyvor
 
     # Hyvor Talk (talk.hyvor.com)
     # Commenting Platform

@@ -4,12 +4,13 @@ metadata:
   name: hyvor-ingress
 spec:
   rules:
-    - http:
+    - host: {{ .Values.instance.domain }}
+      http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: test-webapp-service
+                name: core-service
                 port:
                   number: 80
