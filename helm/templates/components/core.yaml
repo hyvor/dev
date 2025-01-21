@@ -3,8 +3,6 @@ kind: ConfigMap
 metadata:
     name: core-env
 data:
-    HYVOR_INSTANCE: "https://{{ .Values.instance.domain }}"
-    
     DB_HOST: {{ .Values.instance.db.host }}
     DB_PORT: {{ .Values.instance.db.port }}
     DB_USER: {{ .Values.instance.db.user }}
@@ -21,12 +19,14 @@ metadata:
     spec:
         containers:
             - name: core
-              image: hyvor/core:0.0.30
+              image: hyvor/core:beta-billing-1
               ports:
-                  - containerPort: 3000
+                  - containerPort: 80
               envFrom:
                   - configMapRef:
-                        name: core-config
+                        name: instance-env
+                  - configMapRef:
+                        name: core-env
 
 ---
 apiVersion: v1
