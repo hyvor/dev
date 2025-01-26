@@ -41,6 +41,7 @@ cleanup() {
   # kil all child processes
   pkill -P $$  --signal 9
   rm -rf $component/backend/packages/internal
+  rm -rf $component/frontend/src/design
 }
 
 trap cleanup EXIT
