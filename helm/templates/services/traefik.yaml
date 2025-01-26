@@ -1,3 +1,5 @@
+# Traefik is the ingress controller that routes traffic to the correct service in the cluster.
+# Routes are handled in ingress.yaml
 # Source: https://doc.traefik.io/traefik/getting-started/quick-start-with-kubernetes/
 
 kind: ClusterRole
@@ -104,6 +106,9 @@ spec:
           args:
             - --api.insecure
             - --providers.kubernetesingress
+            - --log.filePath=/path/to/traefik.log
+            - --log.format=json
+            - --log.level=DEBUG
           ports:
             - name: web
               containerPort: 80

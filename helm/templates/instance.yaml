@@ -1,8 +1,17 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: instance-env
+    name: instance-env-config
 data:
     HYVOR_INSTANCE: "https://{{ .Values.instance.domain }}"
     APP_KEY: "{{ .Values.instance.appKey }}"
     APP_DEBUG: "{{ .Values.instance.appDebug }}"
+
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: docker-registry-secret
+# data:
+#   .dockerconfigjson: 
+# type: kubernetes.io/dockerconfigjson

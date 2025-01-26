@@ -23,5 +23,5 @@
 .vscode/
 
 # temporarily
-components/
-services/pgsql.yaml
+# components/
+# services/pgsql.yaml

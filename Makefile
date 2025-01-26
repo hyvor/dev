@@ -15,7 +15,10 @@ helm:
 	helm upgrade -i hyvor ./helm --create-namespace --namespace hyvor
 
 helm-deploy-staging:
-	helm upgrade -i hyvor ./helm --create-namespace --namespace hyvor -f ./infra/staging/values.staging.yaml
+	# deploy staging-specific infra
+	kubectl apply -k infra/staging/templates
+	# deploy app
+	helm upgrade -i hyvor ./helm --create-namespace --namespace hyvor -f ./helm/values.yaml -f ./infra/staging/values.staging.yaml
 
 helm-uninstall:
 	helm uninstall hyvor -n hyvor
