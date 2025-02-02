@@ -1,98 +1,98 @@
 services:
-    
-    # Traefik Proxy
-    # HTTPS is used, HTTP is not
-    # Visit localhost:8080 for the dashboard
-    hyvor-proxy:
-        container_name: hyvor-proxy
-        image: traefik:v3.2
-        command:
-           - "--log.level=WARN"
-           - "--api.insecure=true"
-           
-           - "--providers.docker=true"
-           - "--providers.docker.exposedbydefault=false"
-           - "--providers.docker.network=hyvor-network"
+  # Traefik Proxy
+  # HTTPS is used, HTTP is not
+  # Visit localhost:8080 for the dashboard
+  hyvor-proxy:
+    container_name: hyvor-proxy
+    image: traefik:v3.2
+    command:
+      - "--log.level=WARN"
+      - "--api.insecure=true"
 
-           - "--providers.file.fileName=/etc/traefik/tls.toml"
-           - "--providers.file.watch=true"
-           
-           - "--entryPoints.http.address=:80"
-           - "--entryPoints.https.address=:443"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=hyvor-network"
 
-           - "tls.options.default.sniStrict=true"
-        networks:
-            - hyvor-network
-        ports:
-            - "80:80"
-            - "443:443"
-            - "8080:8080"
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - ./meta/compose/traefik:/etc/traefik
+      - "--providers.file.fileName=/etc/traefik/tls.toml"
+      - "--providers.file.watch=true"
 
-    hyvor-service-citus:
-        container_name: hyvor-service-citus
-        image: citusdata/citus:12.1
-        restart: always
-        environment:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-        ports:
-            - "54321:5432"
-        volumes:
-            - ./data/citus:/var/lib/postgresql/data
-            - ./meta/compose/pgsql/initdb.d:/docker-entrypoint-initdb.d
-        networks:
-            - hyvor-network
+      - "--entryPoints.http.address=:80"
+      - "--entryPoints.https.address=:443"
 
-    # Mailpit for testing emails via SMTP
-    # Access via: http://mail.localhost
-    hyvor-service-mailpit:
-        container_name: hyvor-service-mailpit
-        image: axllent/mailpit
-        restart: unless-stopped
-        volumes:
-            - ./data/mailpit:/data
-        # ports:
-        #     - 8025:8025 Web UI
-        #     - 1025:1025  SMTP
-        environment:
-            MP_MAX_MESSAGES: 5000
-            MP_DATABASE: /data/mailpit.db
-            MP_SMTP_AUTH_ACCEPT_ANY: 1
-            MP_SMTP_AUTH_ALLOW_INSECURE: 1
-        networks:
-            - hyvor-network
-        labels:
-            traefik.enable: true
-            traefik.http.routers.hyvor-service-mailpit.rule: Host(`mailpit.localhost`)
-            traefik.http.routers.hyvor-service-mailpit.entrypoints: http
-            traefik.http.services.hyvor-service-mailpit.loadbalancer.server.port: 8025
+      - "tls.options.default.sniStrict=true"
+    networks:
+      - hyvor-network
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./meta/compose/traefik:/etc/traefik
 
-    # MinIO for S3 storage
-    # Access via: http://s3.localhost
-    hyvor-service-minio:
-        container_name: hyvor-service-minio
-        image: quay.io/minio/minio
-        # ports:
-        #    - "9000:9000" S3 API
-        #    - "9001:9001" Web Console
-        environment:
-            MINIO_ROOT_USER: minio
-            MINIO_ROOT_PASSWORD: miniopwd
-            MINIO_DEFAULT_BUCKETS: hyvor-core, hyvor-talk, hyvor-blogs
-        volumes:
-            - ./data/minio:/data
-        entrypoint: ["/bin/sh", "-c", "minio server /data --console-address \":9001\""]
-        networks:
-            - hyvor-network
-        labels:
-            traefik.enable: true
-            traefik.http.routers.hyvor-service-minio.rule: Host(`minio.localhost`)
-            traefik.http.routers.hyvor-service-minio.entrypoints: http
-            traefik.http.services.hyvor-service-minio.loadbalancer.server.port: 9001
+  hyvor-service-pgsql:
+    container_name: hyvor-service-pgsql
+    image: postgres:16.6
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "54321:5432"
+    volumes:
+      - ./data/pgsql:/var/lib/postgresql/data
+      - ./meta/compose/pgsql/initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      - hyvor-network
+
+  # Mailpit for testing emails via SMTP
+  # Access via: http://mail.localhost
+  hyvor-service-mailpit:
+    container_name: hyvor-service-mailpit
+    image: axllent/mailpit
+    restart: unless-stopped
+    volumes:
+      - ./data/mailpit:/data
+    # ports:
+    #     - 8025:8025 Web UI
+    #     - 1025:1025  SMTP
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - hyvor-network
+    labels:
+      traefik.enable: true
+      traefik.http.routers.hyvor-service-mailpit.rule: Host(`mailpit.localhost`)
+      traefik.http.routers.hyvor-service-mailpit.entrypoints: http
+      traefik.http.services.hyvor-service-mailpit.loadbalancer.server.port: 8025
+
+  # MinIO for S3 storage
+  # Access via: http://s3.localhost
+  hyvor-service-minio:
+    container_name: hyvor-service-minio
+    image: quay.io/minio/minio
+    # ports:
+    #    - "9000:9000" S3 API
+    #    - "9001:9001" Web Console
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniopwd
+      MINIO_DEFAULT_BUCKETS: hyvor-core, hyvor-talk, hyvor-blogs
+    volumes:
+      - ./data/minio:/data
+    entrypoint:
+      ["/bin/sh", "-c", 'minio server /data --console-address ":9001"']
+    networks:
+      - hyvor-network
+    labels:
+      traefik.enable: true
+      traefik.http.routers.hyvor-service-minio.rule: Host(`minio.localhost`)
+      traefik.http.routers.hyvor-service-minio.entrypoints: http
+      traefik.http.services.hyvor-service-minio.loadbalancer.server.port: 9001
 
 networks:
-    hyvor-network:
-        external: true
+  hyvor-network:
+    external: true
