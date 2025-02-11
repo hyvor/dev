@@ -21,3 +21,4 @@
 [submodule "post"]
 	path = post
 	url = https://github.com/hyvor/post
+	ignore = all
