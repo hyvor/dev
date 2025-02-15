@@ -58,6 +58,7 @@ Even in the local development, we use a domain name with HTTPS to mimic the prod
 127.0.0.1 hyvor.dev
 127.0.0.1 talk.hyvor.dev
 127.0.0.1 blogs.hyvor.dev
+127.0.0.1 post.hyvor.dev
 ```
 
 (as more products are added, you will need to add them to the `/etc/hosts` file)
