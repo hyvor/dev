@@ -2,3 +2,4 @@
 
 meta/compose/traefik/*.pem
 /data
+/tmp

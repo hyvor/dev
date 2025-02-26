@@ -22,3 +22,7 @@
 	path = post
 	url = https://github.com/hyvor/post
 	ignore = all
+[submodule "agora"]
+	path = agora
+	url = https://github.com/hyvor/agora
+	ignore = all
