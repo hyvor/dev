@@ -1,27 +1,19 @@
-## HYVOR MAIN
+## HYVOR DEVELOPMENT
 
 This is the starting point of developing HYVOR products. It contains the other repositories as submodules.
 
 | Repository   | Description                             | Open-source? |
 | ------------ | --------------------------------------- | ------------ |
-| **products** |                                         |              |
+| **Products** |                                         |              |
 | `talk`       | Hyvor Talk, commenting platform         | No           |
 | `blogs`      | Hyvor Blogs, blogging platform          | No           |
 | `post`       | Hyvor Post, newsletter platform         | No           |
 | `agora`      | Hyvor Agora, community platform (WIP)   | No           |
-| `relay`      | Hyvor Relay, email API                  | Yes          |
-| **meta**     |                                         |              |
+| `relay`      | Hyvor Relay, email sending API          | Yes          |
+| **Meta**     |                                         |              |
 | `core`       | hyvor.com, provides auth, billing, etc. | No           |
 | `internal`   | Hyvor Internal, PHP library             | Yes          |
 | `design`     | Hyvor Design, design system             | Yes          |
-
-Other:
-
-- closed-source:
-  - `core` (hyvor.com: auth, billing, etc.)
-- open-source:
-  - `internal` - Internal PHP library
-  - `design` - Hyvor Design system
 
 ## First Time Setup
 
@@ -35,7 +27,7 @@ Other:
 
 Create a new directory for HYVOR development, if you don't have one already:
 
-```bash
+```shell
 mkdir hyvor/dev
 cd hyvor/dev
 ```
@@ -44,15 +36,22 @@ All below commands are to be run in this directory.
 
 Clone this repository:
 
-```bash
+```shell
+# Option 1: Clone the repository with submodules
+# IMPORTANT: THIS REQUIRES ACCCESS TO PRIVATE REPOSITORIES (HYVOR EMPLOYEES ONLY)
 git clone --recurse-submodules https://github.com/hyvor/dev .
+
+# Option 2: Clone the repository without submodules
+# and then update open-source submodules (ex: relay) manually
+git clone https://github.com/hyvor/dev .
+git submodule update --init relay
 ```
 
 ### Step 2: Init
 
 Run the following command to initialize the project. You only need to run this once.
 
-```bash
+```shell
 ./init
 ```
 
@@ -70,7 +69,7 @@ Once init is done, you can run services and components.
 
 These are the common services used by all components. To run all services, run:
 
-```bash
+```shell
 docker compose up -d
 ```
 
@@ -89,13 +88,13 @@ It starts the following services:
 
 To run a specific component, run:
 
-```bash
+```shell
 ./run core
 ```
 
 If you want to run another component, you can run it like this in a new terminal:
 
-```bash
+```shell
 ./run talk
 ```
 
@@ -110,7 +109,7 @@ Then visit the component URL in your browser:
 
 The `./run` script supports a couple of options:
 
-```bash
+```shell
 # sync the design system files to the component (frontend/src/design)
 # useful for developing the design system
 ./run core --design
@@ -123,7 +122,7 @@ The `./run` script supports a couple of options:
 
 To stop all services, run:
 
-```bash
+```shell
 docker compose down
 ```
 
