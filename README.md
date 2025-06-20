@@ -4,17 +4,21 @@ This is the starting point of developing HYVOR products. It contains the other r
 
 Products:
 
-- `talk`
-- `blogs`
-- `post`
-- `relay`
-- `agora` [WIP]
+- closed-source:
+  - `talk`
+  - `blogs`
+  - `post`
+  - `agora` [WIP]
+- open-source:
+  - `relay`
 
 Other:
 
-- `core` (hyvor.com)
-- `internal` - Internal PHP library
-- `design` - Hyvor Design system
+- closed-source:
+  - `core` (hyvor.com: auth, billing, etc.)
+- open-source:
+  - `internal` - Internal PHP library
+  - `design` - Hyvor Design system
 
 ## First Time Setup
 
@@ -22,7 +26,7 @@ Other:
 
 - [Git](https://git-scm.com/downloads)
 - [Docker](https://docs.docker.com/engine/install/)
-- [mkcert](https://github.com/FiloSottile/mkcert)
+- [mkcert](https://github.com/FiloSottile/mkcert) (`mkcert -install` must be run to install the root CA)
 
 ### Step 1: Clone the Repository
 
@@ -154,7 +158,7 @@ To stop a specific component, run `CTRL+C` in the terminal where you ran the `./
   - Add new PHPUnit (PHPUnit by Remote Interpreter)
   - Select the CLI interpreter you created earlier
   - Set the composer autoload path
-  - Set default configuration path (usually `/app/backend/phpunit.xml.dist`)
+  - Set default configuration path (usually `/app/backend/phpunit.dist.xml`)
 - PHPStan
   - Go to Settings -> PHP -> Quality Tools -> PHPStan
   - Enable PHPStan Inspection
