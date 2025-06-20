@@ -2,15 +2,18 @@
 
 This is the starting point of developing HYVOR products. It contains the other repositories as submodules.
 
-Products:
-
-- closed-source:
-  - `talk`
-  - `blogs`
-  - `post`
-  - `agora` [WIP]
-- open-source:
-  - `relay`
+| Repository   | Description                             | Open-source? |
+| ------------ | --------------------------------------- | ------------ |
+| **products** |                                         |              |
+| `talk`       | Hyvor Talk, commenting platform         | No           |
+| `blogs`      | Hyvor Blogs, blogging platform          | No           |
+| `post`       | Hyvor Post, newsletter platform         | No           |
+| `agora`      | Hyvor Agora, community platform (WIP)   | No           |
+| `relay`      | Hyvor Relay, email API                  | Yes          |
+| **meta**     |                                         |              |
+| `core`       | hyvor.com, provides auth, billing, etc. | No           |
+| `internal`   | Hyvor Internal, PHP library             | Yes          |
+| `design`     | Hyvor Design, design system             | Yes          |
 
 Other:
 
