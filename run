@@ -46,24 +46,6 @@ cleanup() {
 
 trap cleanup EXIT
 
-################ INTERNAL LIBRARY ################
-
-# Sync internal library
-if has_option "--internal" "$@"
-then
-  echo "Syncing internal library"
-  rsync -avz --exclude 'vendor' --exclude '.git' internal $component/backend/packages > /dev/null
-
-  # Watch internal library for changes
-  if command -v fswatch >/dev/null 2>&1
-  then
-    echo "Using fswatch to sync internal library"
-    fswatch -o --exclude 'internal/vendor' internal | xargs -I{} rsync -avzq --exclude 'vendor' --exclude '.git' internal $component/backend/packages > /dev/null &
-  else
-    echo "NOTICE: fswatch is not available. Please install fswatch to sync internal library"
-  fi
-fi
-
 ################ DESIGN SYSTEM ################
 
 # if it has --design option

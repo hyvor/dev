@@ -22,6 +22,10 @@
 	path = post
 	url = https://github.com/hyvor/post
 	ignore = all
+[submodule "relay"]
+	path = relay
+	url = https://github.com/hyvor/relay
+	ignore = all
 [submodule "agora"]
 	path = agora
 	url = https://github.com/hyvor/agora

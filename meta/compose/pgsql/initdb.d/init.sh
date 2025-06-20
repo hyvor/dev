@@ -15,7 +15,7 @@ function create_user_and_database() {
 EOSQL
 }
 
-base_dbs="hyvor hyvor_blogs hyvor_talk hyvor_post hyvor_agora"
+base_dbs="hyvor hyvor_blogs hyvor_talk hyvor_post hyvor_relay hyvor_agora"
 
 for db in $base_dbs; do
   echo "Creating DB variants for $db"

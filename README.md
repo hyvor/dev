@@ -8,7 +8,8 @@ Components:
 - `talk` (talk.hyvor.com)
 - `blogs` (blogs.hyvor.com)
 - `post` (post.hyvor.com)
-- `agora` (agora.hyvor.com)
+- `relay` (relay.hyvor.com)
+- `agora` (agora.hyvor.com) [WIP]
 
 Other:
 
@@ -17,13 +18,13 @@ Other:
 
 ## First Time Setup
 
-### Pre-requisites
+### Step 0: Pre-requisites
 
 - [Git](https://git-scm.com/downloads)
 - [Docker](https://docs.docker.com/engine/install/)
 - [mkcert](https://github.com/FiloSottile/mkcert)
 
-### Clone the Repository
+### Step 1: Clone the Repository
 
 Create a new directory for HYVOR development, if you don't have one already:
 
@@ -40,7 +41,7 @@ Clone this repository:
 git clone --recurse-submodules https://github.com/hyvor/dev .
 ```
 
-### Init
+### Step 2: Init
 
 Run the following command to initialize the project. You only need to run this once.
 
@@ -61,6 +62,7 @@ Even in the local development, we use a domain name with HTTPS to mimic the prod
 127.0.0.1 talk.hyvor.dev
 127.0.0.1 blogs.hyvor.dev
 127.0.0.1 post.hyvor.dev
+127.0.0.1 relay.hyvor.dev
 127.0.0.1 agora.hyvor.dev
 ```
 
@@ -80,12 +82,12 @@ docker compose up -d
 
 It starts the following services:
 
-| Service  | URL                                                  | Username, Password |
-| -------- | ---------------------------------------------------- | ------------------ |
-| Traefik  | (Proxy for `*.hyvor.dev`)                            |                    |
-| Postgres | `postgres://hyvor-service-postgres:5432`             | postgres, postgres |
-| Mailpit  | [http://mailpit.localhost](http://mailpit.localhost) |
-| Minio    | [http://minio.localhost](http://minio.localhost)     | minio, miniopwd    |
+| Service  | URL                                                  | Docker host, Username, Password                 |
+| -------- | ---------------------------------------------------- | ----------------------------------------------- |
+| Traefik  | (Proxy for `*.hyvor.dev`)                            |                                                 |
+| Postgres | `postgres://hyvor-service-postgres:5432`             | hyvor-service-postgres:5432, postgres, postgres |
+| Mailpit  | [http://mailpit.localhost](http://mailpit.localhost) | hyvor-service-mailpit:1025                      |
+| Minio    | [http://minio.localhost](http://minio.localhost)     | minio, miniopwd                                 |
 
 > Note: PGSQL is available on the host at `localhost:54321` if needed (for example, to connect to it using Tableplus).
 
@@ -109,15 +111,12 @@ Then visit the component URL in your browser:
 - [https://talk.hyvor.dev](https://talk.hyvor.dev)
 - [https://blogs.hyvor.dev](https://blogs.hyvor.dev)
 - [https://post.hyvor.dev](https://post.hyvor.dev)
+- [https://relay.hyvor.dev](https://relay.hyvor.dev)
 - [https://agora.hyvor.dev](https://agora.hyvor.dev)
 
 The `./run` script supports a couple of options:
 
 ```bash
-# sync the internal library to the component (backend/packages/internal)
-# useful for developing the internal library
-./run core --internal
-
 # sync the design system files to the component (frontend/src/design)
 # useful for developing the design system
 ./run core --design
@@ -140,8 +139,8 @@ To stop a specific component, run `CTRL+C` in the terminal where you ran the `./
 
 - Code
   - Each component has a Dockerfile that builds the development environment with all the required dependencies.
-  - They also have a `compose.yaml` file that configures `composer watch` to automatically sync your code changes to the container.
-  - Everything runs in Docker containers, so you don't need to install anything on your local machine.
+  - They also have a `compose.yaml` file that sets up the containers, sometimes with additional services like Redis, etc.
+  - Everything runs in Docker containers, so you don't need to install anything on your local machine (except for basic requirements)
 - Domains
   - Traefik listens to port 80 and 443 on your local machine.
   - It routes requests to the correct service based on Docker labels using auto discovery.
