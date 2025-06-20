@@ -2,17 +2,17 @@
 
 This is the starting point of developing HYVOR products. It contains the other repositories as submodules.
 
-Components:
+Products:
 
-- `core` (hyvor.com)
-- `talk` (talk.hyvor.com)
-- `blogs` (blogs.hyvor.com)
-- `post` (post.hyvor.com)
-- `relay` (relay.hyvor.com)
-- `agora` (agora.hyvor.com) [WIP]
+- `talk`
+- `blogs`
+- `post`
+- `relay`
+- `agora` [WIP]
 
 Other:
 
+- `core` (hyvor.com)
 - `internal` - Internal PHP library
 - `design` - Hyvor Design system
 
@@ -55,24 +55,11 @@ This command:
 - Creates the docker network `hyvor-network`.
 - Creates data directories for databases for Minio (S3).
 
-Even in the local development, we use a domain name with HTTPS to mimic the production environment. To resolve `*.hyvor.dev` to `127.0.0.1`, add the following lines to your `/etc/hosts` file:
-
-```bash
-127.0.0.1 hyvor.dev
-127.0.0.1 talk.hyvor.dev
-127.0.0.1 blogs.hyvor.dev
-127.0.0.1 post.hyvor.dev
-127.0.0.1 relay.hyvor.dev
-127.0.0.1 agora.hyvor.dev
-```
-
-(as more products are added, you will need to add them to the `/etc/hosts` file)
-
-### Run
+### Step 3: Run
 
 Once init is done, you can run services and components.
 
-#### Step 1: Start the services
+#### 3.1: Start the services
 
 These are the common services used by all components. To run all services, run:
 
@@ -84,14 +71,14 @@ It starts the following services:
 
 | Service  | URL                                                  | Docker host, Username, Password                 |
 | -------- | ---------------------------------------------------- | ----------------------------------------------- |
-| Traefik  | (Proxy for `*.hyvor.dev`)                            |                                                 |
+| Traefik  | (Proxy for `*.hyvor.localhost`)                      |                                                 |
 | Postgres | `postgres://hyvor-service-postgres:5432`             | hyvor-service-postgres:5432, postgres, postgres |
 | Mailpit  | [http://mailpit.localhost](http://mailpit.localhost) | hyvor-service-mailpit:1025                      |
 | Minio    | [http://minio.localhost](http://minio.localhost)     | minio, miniopwd                                 |
 
 > Note: PGSQL is available on the host at `localhost:54321` if needed (for example, to connect to it using Tableplus).
 
-#### Step 2: Start one or more components
+#### 3.2: Start one or more components
 
 To run a specific component, run:
 
@@ -107,12 +94,12 @@ If you want to run another component, you can run it like this in a new terminal
 
 Then visit the component URL in your browser:
 
-- [https://hyvor.dev](https://hyvor.dev)
-- [https://talk.hyvor.dev](https://talk.hyvor.dev)
-- [https://blogs.hyvor.dev](https://blogs.hyvor.dev)
-- [https://post.hyvor.dev](https://post.hyvor.dev)
-- [https://relay.hyvor.dev](https://relay.hyvor.dev)
-- [https://agora.hyvor.dev](https://agora.hyvor.dev)
+- [https://hyvor.localhost](https://hyvor.localhost)
+- [https://talk.hyvor.localhost](https://talk.hyvor.localhost)
+- [https://blogs.hyvor.localhost](https://blogs.hyvor.localhost)
+- [https://post.hyvor.localhost](https://post.hyvor.localhost)
+- [https://relay.hyvor.localhost](https://relay.hyvor.localhost)
+- [https://agora.hyvor.localhost](https://agora.hyvor.localhost)
 
 The `./run` script supports a couple of options:
 
