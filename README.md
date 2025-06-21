@@ -8,8 +8,8 @@ This is the starting point of developing HYVOR products. It contains the other r
 | `talk`       | Hyvor Talk, commenting platform         | No           |
 | `blogs`      | Hyvor Blogs, blogging platform          | No           |
 | `post`       | Hyvor Post, newsletter platform         | No           |
-| `agora`      | Hyvor Agora, community platform (WIP)   | No           |
 | `relay`      | Hyvor Relay, email sending API          | Yes          |
+| `agora`      | Hyvor Agora, community platform (WIP)   | No           |
 | **Meta**     |                                         |              |
 | `core`       | hyvor.com, provides auth, billing, etc. | No           |
 | `internal`   | Hyvor Internal, PHP library             | Yes          |
@@ -21,7 +21,7 @@ This is the starting point of developing HYVOR products. It contains the other r
 
 - [Git](https://git-scm.com/downloads)
 - [Docker](https://docs.docker.com/engine/install/)
-- [mkcert](https://github.com/FiloSottile/mkcert) (`mkcert -install` must be run to install the root CA)
+- [mkcert](https://github.com/FiloSottile/mkcert) (make sure to run `mkcert -install` to install the root CA)
 
 ### Step 1: Clone the Repository
 
@@ -59,7 +59,7 @@ This command:
 
 - Generates SSL certificates for the development server using `mkcert`.
 - Creates the docker network `hyvor-network`.
-- Creates data directories for databases for Minio (S3).
+- Creates data directories for databases and Minio (S3).
 
 ### Step 3: Run
 
@@ -67,7 +67,7 @@ Once init is done, you can run services and components.
 
 #### 3.1: Start the services
 
-These are the common services used by all components. To run all services, run:
+These are the shared development services used by all components. To run all services, run:
 
 ```shell
 docker compose up -d
@@ -78,7 +78,7 @@ It starts the following services:
 | Service  | URL                                                  | Docker host, Username, Password                 |
 | -------- | ---------------------------------------------------- | ----------------------------------------------- |
 | Traefik  | (Proxy for `*.hyvor.localhost`)                      |                                                 |
-| Postgres | `postgres://hyvor-service-postgres:5432`             | hyvor-service-postgres:5432, postgres, postgres |
+| Postgres |                                                      | hyvor-service-postgres:5432, postgres, postgres |
 | Mailpit  | [http://mailpit.localhost](http://mailpit.localhost) | hyvor-service-mailpit:1025                      |
 | Minio    | [http://minio.localhost](http://minio.localhost)     | minio, miniopwd                                 |
 
@@ -102,10 +102,7 @@ Then visit the component URL in your browser:
 
 - [https://hyvor.localhost](https://hyvor.localhost)
 - [https://talk.hyvor.localhost](https://talk.hyvor.localhost)
-- [https://blogs.hyvor.localhost](https://blogs.hyvor.localhost)
-- [https://post.hyvor.localhost](https://post.hyvor.localhost)
-- [https://relay.hyvor.localhost](https://relay.hyvor.localhost)
-- [https://agora.hyvor.localhost](https://agora.hyvor.localhost)
+- ...
 
 The `./run` script supports a couple of options:
 
