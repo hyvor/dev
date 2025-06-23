@@ -1,10 +1,10 @@
 [[tls.certificates]]
-certFile = "/etc/traefik/hyvor.dev.pem"
-keyFile = "/etc/traefik/hyvor.dev.key.pem"
+certFile = "/etc/traefik/hyvor.localhost.pem"
+keyFile = "/etc/traefik/hyvor.localhost.key.pem"
 
 [[tls.certificates]]
-certFile = "/etc/traefik/wildcard.hyvor.dev.pem"
-keyFile = "/etc/traefik/wildcard.hyvor.dev.key.pem"
+certFile = "/etc/traefik/wildcard.hyvor.localhost.pem"
+keyFile = "/etc/traefik/wildcard.hyvor.localhost.key.pem"
 
 [http.middlewares]
 [http.middlewares.vite-retry.retry]

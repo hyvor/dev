@@ -4,8 +4,8 @@ set -e
 
 # Generate SSL certificates
 echo "Generating SSL certificates..."
-mkcert -key-file meta/compose/traefik/hyvor.dev.key.pem -cert-file meta/compose/traefik/hyvor.dev.pem hyvor.dev
-mkcert -key-file meta/compose/traefik/wildcard.hyvor.dev.key.pem -cert-file meta/compose/traefik/wildcard.hyvor.dev.pem "*.hyvor.dev"
+mkcert -key-file meta/compose/traefik/hyvor.localhost.key.pem -cert-file meta/compose/traefik/hyvor.localhost.pem hyvor.localhost
+mkcert -key-file meta/compose/traefik/wildcard.hyvor.localhost.key.pem -cert-file meta/compose/traefik/wildcard.hyvor.localhost.pem "*.hyvor.localhost"
 
 # Create docker network if not exists
 echo "Creating docker network..."
@@ -15,7 +15,7 @@ docker network inspect hyvor-network >/dev/null 2>&1 || docker network create hy
 echo "Creating data directories..."
 mkdir -p data/minio data/mailpit data/postgres
 
-components="core talk blogs post"
+components="core talk blogs post relay agora"
 
 # Minio buckets
 echo "Creating Minio buckets..."

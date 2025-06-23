@@ -2,5 +2,4 @@
 
 meta/compose/traefik/*.pem
 /data
-node_modules
-kube-prometheus
+/tmp
