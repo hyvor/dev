@@ -94,6 +94,42 @@ services:
       traefik.http.routers.hyvor-service-minio.entrypoints: http
       traefik.http.services.hyvor-service-minio.loadbalancer.server.port: 9001
 
+  ### ======== MONITORING SERVICES ======== ###
+  hyvor-service-grafana:
+    image: grafana/grafana:latest
+    container_name: hyvor-service-grafana
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+    volumes:
+      - ./meta/grafana/provisioning:/etc/grafana/provisioning
+      - ./meta/grafana/dashboards:/etc/grafana/dashboards
+      - ./meta/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - grafana_data:/var/lib/grafana
+    networks:
+      - hyvor-network
+    labels:
+      traefik.enable: true
+      traefik.http.routers.hyvor-service-grafana.rule: Host(`grafana.localhost`)
+      traefik.http.routers.hyvor-service-grafana.entrypoints: http
+      traefik.http.services.hyvor-service-grafana.loadbalancer.server.port: 3000
+
+  hyvor-service-loki:
+    image: grafana/loki:latest
+    container_name: hyvor-service-loki
+    volumes:
+      # - ./loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    restart: unless-stopped
+    networks:
+      - hyvor-network
+
 networks:
   hyvor-network:
     external: true
+
+volumes:
+  grafana_data:
+  loki_data:
