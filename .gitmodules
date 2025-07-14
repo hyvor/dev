@@ -30,3 +30,7 @@
 	path = agora
 	url = https://github.com/hyvor/agora
 	ignore = all
+[submodule "reader"]
+	path = reader
+	url = git@github.com:hyvor/reader.git
+	ignore = all
