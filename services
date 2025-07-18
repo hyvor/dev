@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+cd "$(dirname "$0")"
+
+for dir in */; do
+  dashboard_file="$dir/meta/monitoring/grafana.json"
+  if [ -f "$dashboard_file" ]; then
+    component_name=$(basename "$dir")
+    echo "Copying Grafana dashboard for $component_name"
+    cp "$dashboard_file" "meta/grafana/dashboards/$component_name.json"
+  fi
+done
+
+
