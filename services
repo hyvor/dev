@@ -14,8 +14,17 @@ copy_grafana_dashboards() {
   done
 }
 
+# Check for --monitoring flag
+PROFILE_ARG=""
+for arg in "$@"; do
+  if [ "$arg" = "--monitoring" ]; then
+    PROFILE_ARG="--profile monitoring"
+    break
+  fi
+done
+
 copy_grafana_dashboards
 
 docker compose down || true
-docker compose up -d
+docker compose $PROFILE_ARG up -d
 

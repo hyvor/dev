@@ -82,14 +82,14 @@ It starts the following services:
 | Mailpit  | [http://mailpit.localhost](http://mailpit.localhost) | hyvor-service-mailpit:1025                      |
 | Minio    | [http://minio.localhost](http://minio.localhost)     | minio, miniopwd                                 |
 
+> Note: PGSQL is available on the host at `localhost:54321` if needed (for example, to connect to it using Tableplus).
+
 The following services can be started optionally by running `./services --monitoring`:
 
 | Service    | URL                                                        | Docker host, Username, Password          |
 | ---------- | ---------------------------------------------------------- | ---------------------------------------- |
 | Grafana    | [http://grafana.localhost](http://grafana.localhost)       | hyvor-service-grafana:3000, admin, admin |
 | Prometheus | [http://prometheus.localhost](http://prometheus.localhost) | hyvor-service-prometheus:9090, -         |
-
-> Note: PGSQL is available on the host at `localhost:54321` if needed (for example, to connect to it using Tableplus).
 
 #### 3.2: Start one or more components
 
