@@ -84,6 +84,6 @@ get_profile() {
 
 PROFILE=$(get_profile "$@")
 echo "Running $component with profile $PROFILE"
-docker compose  -f "$component/compose.yaml" --profile "$PROFILE" up --build --watch
+docker compose  -f "$component/compose.yaml" --profile "$PROFILE" up --build
 
 cleanup
