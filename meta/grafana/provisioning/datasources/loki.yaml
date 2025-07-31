@@ -4,7 +4,7 @@ datasources:
   - name: Loki
     type: loki
     access: proxy
-    url: http://loki:3100
-    editable: true
+    url: http://hyvor-service-loki:3100
+    editable: false
     jsonData:
       maxLines: 1000

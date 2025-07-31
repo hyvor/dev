@@ -6,6 +6,6 @@ datasources:
     access: proxy
     url: http://hyvor-service-prometheus:9090
     isDefault: true
-    editable: true
+    editable: false
     jsonData:
       httpMethod: POST

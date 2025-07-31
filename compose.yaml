@@ -137,12 +137,17 @@ services:
     profiles:
       - monitoring
     volumes:
-      # - ./loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - ./meta/loki/loki-config.yaml:/etc/loki/local-config.yaml:ro
       - loki_data:/loki
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
     networks:
       - hyvor-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.loki.rule=Host(`loki.localhost`)"
+      - "traefik.http.routers.loki.entrypoints=http"
+      - "traefik.http.services.loki.loadbalancer.server.port=3100"
 
 networks:
   hyvor-network:
