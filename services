@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# cd to the script's directory
+cd "$(dirname "$0")" || exit 1
+
+copy_grafana_dashboards() {
+
+  for dir in */; do
+    dashboard_file="$dir/meta/monitoring/grafana.json"
+    if [ -f "$dashboard_file" ]; then
+      component_name=$(basename "$dir")
+      cp "$dashboard_file" "meta/grafana/dashboards/$component_name.json"
+    fi
+  done
+}
+
+# Check for --monitoring flag
+PROFILE_ARG=""
+for arg in "$@"; do
+  if [ "$arg" = "--monitoring" ]; then
+    PROFILE_ARG="--profile monitoring"
+    break
+  fi
+done
+
+copy_grafana_dashboards
+
+docker compose down || true
+docker compose $PROFILE_ARG up -d
+
