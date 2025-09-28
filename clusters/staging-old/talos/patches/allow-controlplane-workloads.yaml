@@ -1,5 +1,0 @@
-# https://www.talos.dev/v1.9/talos-guides/howto/workers-on-controlplane/
-# Allows running workloads on control plane nodes
-# (Only on staging)
-cluster:
-  allowSchedulingOnControlPlanes: true
