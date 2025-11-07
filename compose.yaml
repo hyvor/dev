@@ -94,6 +94,21 @@ services:
       traefik.http.routers.hyvor-service-minio.entrypoints: http
       traefik.http.services.hyvor-service-minio.loadbalancer.server.port: 9001
 
+  hyvor-service-seaweedfs:
+    image: chrislusf/seaweedfs
+    container_name: hyvor-service-seaweedfs
+    command: server -s3
+    networks:
+      - hyvor-network
+    labels:
+      traefik.enable: true
+      traefik.http.routers.hyvor-service-seaweedfs.rule: Host(`seaweedfs.localhost`)
+      traefik.http.routers.hyvor-service-seaweedfs.entrypoints: http
+      traefik.http.routers.hyvor-service-seaweedfs.service: hyvor-service-seaweedfs
+      traefik.http.services.hyvor-service-seaweedfs.loadbalancer.server.port: 8333
+    volumes:
+      - seaweedfs_data:/data
+
   ### ======== MONITORING SERVICES ======== ###
   hyvor-service-grafana:
     image: grafana/grafana:latest
