@@ -34,3 +34,6 @@
 	path = reader
 	url = git@github.com:hyvor/reader.git
 	ignore = all
+[submodule "fortguard"]
+	path = fortguard
+	url = https://github.com/hyvor/fortguard

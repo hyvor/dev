@@ -20,7 +20,7 @@ arch=$(uname -m)
 echo "Installing Loki plugin for ${arch}..."
 docker plugin install grafana/loki-docker-driver:3.3.2-${arch} --alias loki --grant-all-permissions
 
-components="core talk blogs post relay agora reader"
+components="core talk blogs post relay agora reader fortguard"
 
 # Minio buckets
 echo "Creating Minio buckets..."
