@@ -4,7 +4,7 @@ services:
   # Visit localhost:8080 for the dashboard
   hyvor-proxy:
     container_name: hyvor-proxy
-    image: traefik:v3.2
+    image: traefik:latest
     command:
       - "--log.level=WARN"
       - "--api.insecure=true"
@@ -70,44 +70,24 @@ services:
       traefik.http.routers.hyvor-service-mailpit.entrypoints: http
       traefik.http.services.hyvor-service-mailpit.loadbalancer.server.port: 8025
 
-  # MinIO for S3 storage
-  # Access via: http://s3.localhost
-  hyvor-service-minio:
-    container_name: hyvor-service-minio
-    image: quay.io/minio/minio
-    # ports:
-    #    - "9000:9000" S3 API
-    #    - "9001:9001" Web Console
-    environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: miniopwd
-      MINIO_DEFAULT_BUCKETS: hyvor-core, hyvor-talk, hyvor-blogs
-    volumes:
-      - ./data/minio:/data
-    entrypoint:
-      ["/bin/sh", "-c", 'minio server /data --console-address ":9001"']
-    networks:
-      - hyvor-network
-    labels:
-      traefik.enable: true
-      traefik.http.routers.hyvor-service-minio.rule: Host(`minio.localhost`)
-      traefik.http.routers.hyvor-service-minio.entrypoints: http
-      traefik.http.services.hyvor-service-minio.loadbalancer.server.port: 9001
-
   hyvor-service-seaweedfs:
     image: chrislusf/seaweedfs
     container_name: hyvor-service-seaweedfs
-    command: server -s3
+    command: server -s3 -dir=/data
     networks:
       - hyvor-network
+    # ports:
+    #    - "8333:8333" # S3 Gateway
+    #    - "9333:9333" # Master UI / API
+    #    - "8888:8888" # Filer UI / API
     labels:
       traefik.enable: true
       traefik.http.routers.hyvor-service-seaweedfs.rule: Host(`seaweedfs.localhost`)
       traefik.http.routers.hyvor-service-seaweedfs.entrypoints: http
       traefik.http.routers.hyvor-service-seaweedfs.service: hyvor-service-seaweedfs
-      traefik.http.services.hyvor-service-seaweedfs.loadbalancer.server.port: 8333
+      traefik.http.services.hyvor-service-seaweedfs.loadbalancer.server.port: 9333
     volumes:
-      - seaweedfs_data:/data
+      - ./data/seaweed:/data
 
   ### ======== MONITORING SERVICES ======== ###
   hyvor-service-grafana:
