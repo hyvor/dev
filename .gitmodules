@@ -32,5 +32,5 @@
 	ignore = all
 [submodule "reader"]
 	path = reader
-	url = git@github.com:hyvor/reader.git
+	url = https://github.com/hyvor/reader
 	ignore = all

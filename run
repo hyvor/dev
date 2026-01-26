@@ -74,16 +74,27 @@ fi
 # Run compose
 
 get_profile() {
-  if has_option "--e2e" "$@"
-  then
-    echo "e2e"
-  else
-    echo "dev"
-  fi
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --profile) # --profile <name>
+        echo "$2"
+        return
+        ;;
+      --profile=*) # --profile=<name>
+        echo "${1#*=}"
+        return
+        ;;
+    esac
+    shift
+  done
+
+  # Default if no profile provided
+  echo "dev"
 }
 
+cd $component
 PROFILE=$(get_profile "$@")
 echo "Running $component with profile $PROFILE"
-docker compose  -f "$component/compose.yaml" --profile "$PROFILE" up --build
+docker compose --profile "$PROFILE" up --build
 
 cleanup

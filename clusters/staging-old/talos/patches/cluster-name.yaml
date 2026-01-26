@@ -1,5 +1,0 @@
-# Set custom cluster name
-cluster:
-  clusterName: cluster.hyvorstaging.com
-  network:
-    dnsDomain: local.cluster.hyvorstaging.com
