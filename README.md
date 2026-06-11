@@ -75,14 +75,27 @@ These are the shared development services used by all components. To run all ser
 
 It starts the following services:
 
-| Service  | URL                                                  | Docker host, Username, Password                 |
-| -------- | ---------------------------------------------------- | ----------------------------------------------- |
-| Traefik  | (Proxy for `*.hyvor.localhost`)                      |                                                 |
-| Postgres |                                                      | hyvor-service-postgres:5432, postgres, postgres |
-| Mailpit  | [http://mailpit.localhost](http://mailpit.localhost) | hyvor-service-mailpit:1025                      |
-| Minio    | [http://minio.localhost](http://minio.localhost)     | minio, miniopwd                                 |
-
-> Note: PGSQL is available on the host at `localhost:54321` if needed (for example, to connect to it using Tableplus).
+1. Traefik
+    - Proxy for `*.hyvor.localhost`
+2. Postgres
+    - ```
+      DATABASE_URL="postgresql://postgres:postgres@hyvor-service-pgsql:5432/database_name"
+      ```
+    - Available on the host at `localhost:54321` if needed (for example, to connect to it using Tableplus).
+3. Mailpit
+   - For email testing
+   - ```
+     MAILER_DSN=smtp://hyvor-service-mailpit:1025
+     ```
+4. SeaweedFS
+   - Local S3
+   - ```
+     S3_ENDPOINT=http://hyvor-service-seaweedfs:8333
+     S3_REGION=us-east-1
+     S3_BUCKET=default
+     S3_KEY=
+     S3_SECRET=
+     ```
 
 The following services can be started optionally by running `./services --monitoring`:
 
