@@ -4,7 +4,7 @@ services:
   # Visit localhost:8080 for the dashboard
   hyvor-proxy:
     container_name: hyvor-proxy
-    image: traefik:latest
+    image: traefik:v3.7
     command:
       - "--log.level=WARN"
       - "--api.insecure=true"
@@ -27,6 +27,7 @@ services:
       - "80:80"
       - "443:443"
       - "8080:8080"
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./meta/compose/traefik:/etc/traefik
