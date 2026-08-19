@@ -67,7 +67,7 @@ When filing a bug report, please include:
 ## Security issues
 
 Please do **not** report security vulnerabilities through public GitHub
-issues. Refer to the repository's `SECURITY.md` (if present) for how to
+issues. Refer to [`SECURITY.md`](SECURITY.md) for how to
 report them responsibly, or contact us directly.
 
 ## Code of conduct
