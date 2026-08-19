@@ -1,12 +1,13 @@
 # AI Usage Policy
 
-> HYVOR's AI Usage Policy is adapted from the [Ghostty Project](https://github.com/ghostty-org/ghostty/blob/main/AI_POLICY.md).
+> HYVOR's AI Usage Policy is adapted from the [Ghostty Project's AI policy](https://github.com/ghostty-org/ghostty/blob/main/AI_POLICY.md).
 
 HYVOR has strict rules for AI usage:
 
 - **All AI usage in any form must be disclosed.** You must state
   the tool you used (e.g. Claude Code, Cursor, Amp) along with
-  the extent that the work was AI-assisted.
+  the extent that the work was AI-assisted. This rule does not
+  apply to maintainers.
 
 - **The human-in-the-loop must fully understand all code.** If you
   can't explain what your changes do and how they interact with the
@@ -23,7 +24,3 @@ HYVOR has strict rules for AI usage:
 - **No AI-generated media is allowed (art, images, videos, audio, etc.).**
   Text and code are the only acceptable AI-generated content, per the
   other rules in this policy.
-
-These rules apply only to outside contributions to HYVOR. Maintainers
-are exempt from these rules and may use AI tools at their discretion;
-they've proven themselves trustworthy to apply good judgment.
