@@ -47,6 +47,34 @@ services:
     networks:
       - hyvor-network
 
+  # Mercure hub for real-time broadcasting (e.g. collaborative editing in Blogs)
+  # Publish (internal): http://mercure.hyvor.internal/.well-known/mercure
+  # Subscribe (external): https://mercure.hyvor.localhost/.well-known/mercure
+  hyvor-service-mercure:
+    container_name: hyvor-service-mercure
+    image: dunglas/mercure:v0.24
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: ':80'
+      # dev-only secret, must match symfony/.env.dev's MERCURE_JWT_SECRET
+      MERCURE_PUBLISHER_JWT_KEY: '!MercureDevSecretKeyForLocalDevOnly!'
+      MERCURE_SUBSCRIBER_JWT_KEY: '!MercureDevSecretKeyForLocalDevOnly!'
+      MERCURE_EXTRA_DIRECTIVES: |
+        cors_origins https://blogs.hyvor.localhost
+    volumes:
+      - ./data/mercure:/data
+      - ./data/mercure-config:/config
+    networks:
+      hyvor-network:
+        aliases:
+          - mercure.hyvor.internal
+    labels:
+      traefik.enable: true
+      traefik.http.routers.hyvor-service-mercure.rule: Host(`mercure.hyvor.localhost`)
+      traefik.http.routers.hyvor-service-mercure.entrypoints: https
+      traefik.http.routers.hyvor-service-mercure.tls: true
+      traefik.http.services.hyvor-service-mercure.loadbalancer.server.port: 80
+
   # Mailpit for testing emails via SMTP
   # Access via: http://mail.localhost
   hyvor-service-mailpit:
