@@ -60,7 +60,7 @@ services:
       MERCURE_PUBLISHER_JWT_KEY: '!MercureDevSecretKeyForLocalDevOnly!'
       MERCURE_SUBSCRIBER_JWT_KEY: '!MercureDevSecretKeyForLocalDevOnly!'
       MERCURE_EXTRA_DIRECTIVES: |
-        cors_origins https://blogs.hyvor.localhost
+        cors_origins https://blogs.hyvor.localhost https://blogs.build.hyvor.localhost
     volumes:
       - ./data/mercure:/data
       - ./data/mercure-config:/config
@@ -98,6 +98,32 @@ services:
       traefik.http.routers.hyvor-service-mailpit.rule: Host(`mailpit.localhost`)
       traefik.http.routers.hyvor-service-mailpit.entrypoints: http
       traefik.http.services.hyvor-service-mailpit.loadbalancer.server.port: 8025
+
+  # OIDC provider for testing self-hosted deployments (e.g. blogs' meta/build.local).
+  # Not started by ./services by default - run manually:
+  #   docker compose --profile external up -d hyvor-service-dex
+  # Statically configured with one test user: admin@hyvor.com / admin
+  hyvor-service-dex:
+    container_name: hyvor-service-dex
+    image: ghcr.io/dexidp/dex:v2.37.0
+    volumes:
+      - ./meta/compose/dex/dex.config.yaml:/etc/dex/config.docker.yaml
+    command: dex serve /etc/dex/config.docker.yaml
+    profiles:
+      - external
+    labels:
+      traefik.enable: true
+      traefik.http.routers.hyvor-service-dex.rule: Host(`dex.127.0.0.1.sslip.io`)
+      traefik.http.routers.hyvor-service-dex.entrypoints: http
+      traefik.http.services.hyvor-service-dex.loadbalancer.server.port: 80
+    networks:
+      hyvor-network:
+        aliases:
+          # same hostname is used internally (the app calls dex's OIDC endpoints server-side)
+          # and externally (the browser is redirected to dex to log in) - both must resolve
+          # to the same place, since dex derives its OIDC endpoints from the issuer URL.
+          # sslip.io resolves publicly to 127.0.0.1, so this works from both contexts.
+          - dex.127.0.0.1.sslip.io
 
   hyvor-service-seaweedfs:
     image: chrislusf/seaweedfs
