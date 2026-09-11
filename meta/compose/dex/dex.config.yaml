@@ -1,0 +1,18 @@
+issuer: http://dex.127.0.0.1.sslip.io/dex
+storage:
+  type: memory
+web:
+  http: 0.0.0.0:80
+staticClients:
+  - id: example-app
+    redirectURIs:
+      - "https://relay.build.hyvor.localhost/api/oidc/callback"
+      - "https://blogs.build.hyvor.localhost/api/oidc/callback"
+    name: "HYVOR Local"
+    secret: example-app-secret
+enablePasswordDB: true
+staticPasswords:
+  - email: "admin@hyvor.com"
+    hash: "$2a$10$fyJDcYxWTZG2pV8C3ne0Wu1/grpDaAfyAL2fJJfAozZs0gfF6E.Ym" # password: admin
+    username: "admin"
+    userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
